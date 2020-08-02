@@ -1,0 +1,228 @@
+---
+openapi: 3.0.2
+info:
+  title: Category API
+  version: 1.0.0
+  description: 'Category Api for blog post '
+  contact:
+    name: Tommy Dang
+    email: sinhvienbk13@gmail.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
+paths:
+  /categories:
+    summary: Path used to manage the list of categories.
+    description: The REST endpoint/path used to list and create zero or more `category`
+      entities.  This path contains a `GET` and `POST` operation to perform the list
+      and create tasks, respectively.
+    get:
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/category'
+              examples:
+                categories:
+                  value:
+                  - id: 5596c83f-8d52-4c85-9e6d-5b722b4e6ecd
+                    name: Technology
+                    description: Lorem Ipsum has been the industry's standard dummy
+                      text ever since the 1500s, when an unknown printer took a galley
+                      of type and scrambled it to make a type specimen book
+                    langCode: en-us
+                  - id: 5596c83f-8d52-4c85-9e6d-5b722b4e6ecd
+                    name: Elasticsearch
+                    description: Lorem Ipsum has been the industry's standard dummy
+                      text ever since the 1500s, when an unknown printer took a galley
+                      of type and scrambled it to make a type specimen book
+                    langCode: en-us
+                  - id: 5596c83f-8d52-4c85-9e6d-5b722b4e6ecd
+                    name: .NET
+                    description: Lorem Ipsum has been the industry's standard dummy
+                      text ever since the 1500s, when an unknown printer took a galley
+                      of type and scrambled it to make a type specimen book
+                    langCode: en-us
+          description: Successful response - returns an array of `category` entities.
+      operationId: getcategories
+      summary: List All categories
+      description: Gets a list of all `category` entities.
+    post:
+      requestBody:
+        description: A new `category` to be created.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/createCategoryCommand'
+            examples:
+              categoryCommand:
+                value:
+                  name: Technology
+                  description: Lorem Ipsum has been the industry's standard dummy
+                    text ever since the 1500s, when an unknown printer took a galley
+                    of type and scrambled it to make a type specimen book
+                  langCode: en-us
+        required: true
+      responses:
+        "201":
+          description: Successful response.
+      operationId: createcategory
+      summary: Create a category
+      description: Creates a new instance of a `category`.
+  /categories/{categoryId}:
+    summary: Path used to manage a single category.
+    description: The REST endpoint/path used to get, update, and delete single instances
+      of an `category`.  This path contains `GET`, `PUT`, and `DELETE` operations
+      used to perform the get, update, and delete tasks, respectively.
+    get:
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/category'
+              examples:
+                category:
+                  value:
+                    id: 5596c83f-8d52-4c85-9e6d-5b722b4e6ecd
+                    name: Technology
+                    description: Lorem Ipsum has been the industry's standard dummy
+                      text ever since the 1500s, when an unknown printer took a galley
+                      of type and scrambled it to make a type specimen book
+                    langCode: en-us
+          description: Get single category
+      operationId: getcategory
+      summary: Get a category
+      description: Gets the details of a single instance of a `category`.
+    put:
+      requestBody:
+        description: Updated `category` information.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/category'
+            examples:
+              category:
+                value:
+                  id: 5596c83f-8d52-4c85-9e6d-5b722b4e6ecd
+                  name: Technology
+                  description: Lorem Ipsum has been the industry's standard dummy
+                    text ever since the 1500s, when an unknown printer took a galley
+                    of type and scrambled it to make a type specimen book
+                  langCode: en-us
+        required: true
+      responses:
+        "202":
+          description: Successful response.
+      operationId: updatecategory
+      summary: Update a category
+      description: Updates an existing `category`.
+    delete:
+      responses:
+        "204":
+          description: Successful response.
+      operationId: deletecategory
+      summary: Delete a category
+      description: Deletes an existing `category`.
+    parameters:
+    - examples:
+        id:
+          value: '"5596c83f-8d52-4c85-9e6d-5b722b4e6ecd"'
+      name: categoryId
+      description: A unique identifier for a `category`.
+      schema:
+        type: string
+      in: path
+      required: true
+components:
+  schemas:
+    category:
+      title: Root Type for category
+      description: category model for grouping blog's article
+      type: object
+      properties:
+        id:
+          description: Unique Id
+          type: string
+        name:
+          description: Name of Category
+          type: string
+        description:
+          description: Description text for category
+          type: string
+        langCode:
+          description: 'Language Code '
+          type: string
+      example:
+        id: 5596c83f-8d52-4c85-9e6d-5b722b4e6ecd
+        name: Technology
+        description: Lorem Ipsum has been the industry's standard dummy text ever
+          since the 1500s, when an unknown printer took a galley of type and scrambled
+          it to make a type specimen book
+        langCode: en-us
+    createCategoryCommand:
+      title: Root Type for createCategoryCommand
+      description: command to create category
+      required:
+      - name
+      - langCode
+      type: object
+      properties:
+        name:
+          description: Name of category
+          type: string
+        description:
+          description: Description text of category
+          type: string
+        langCode:
+          description: Language Code
+          type: string
+      example:
+        name: Technology
+        description: Lorem Ipsum has been the industry's standard dummy text ever
+          since the 1500s, when an unknown printer took a galley of type and scrambled
+          it to make a type specimen book
+        langCode: en-us
+    updateCategoryCommand:
+      title: Root Type for updateCategoryCommand
+      description: command to update category
+      required:
+      - id
+      - langCode
+      - name
+      type: object
+      properties:
+        id:
+          description: Unique Id
+          type: string
+        name:
+          description: Name of category
+          type: string
+        description:
+          description: Description text of category
+          type: string
+        langCode:
+          description: Language Code
+          type: string
+      example:
+        id: 5596c83f-8d52-4c85-9e6d-5b722b4e6ecd
+        name: Technology
+        description: Lorem Ipsum has been the industry's standard dummy text ever
+          since the 1500s, when an unknown printer took a galley of type and scrambled
+          it to make a type specimen book
+        langCode: en-us
+    deleteCategoryCommand:
+      title: Root Type for deleteCategoryCommand
+      description: delete category command
+      required:
+      - id
+      type: object
+      properties:
+        id:
+          description: Unique Id
+          type: string
+      example:
+        id: 5596c83f-8d52-4c85-9e6d-5b722b4e6ecd
